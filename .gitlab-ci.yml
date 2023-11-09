@@ -2,7 +2,7 @@ workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
-image: node:18-alpine
+image: node:lts-alpine
 
 stages:
   - deploy
