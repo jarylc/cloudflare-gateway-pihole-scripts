@@ -1,6 +1,11 @@
 import { deleteZeroTrustRule, getZeroTrustRules } from "./lib/api.js";
 import { notifyWebhook } from "./lib/helpers.js";
 
+// disable logging
+console.log = function() {}
+console.warn = function() {}
+
+
 const { result: rules } = await getZeroTrustRules();
 const cgpsRules = rules.filter(({ name }) => name.startsWith("CGPS Filter Lists"));
 

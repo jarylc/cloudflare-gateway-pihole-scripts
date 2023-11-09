@@ -22,6 +22,10 @@ import {
   readFile,
 } from "./lib/utils.js";
 
+// disable logging
+console.log = function() {}
+console.warn = function() {}
+
 const allowlistFilename = existsSync(PROCESSING_FILENAME.OLD_ALLOWLIST)
   ? PROCESSING_FILENAME.OLD_ALLOWLIST
   : PROCESSING_FILENAME.ALLOWLIST;

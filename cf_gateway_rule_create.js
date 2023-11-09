@@ -2,6 +2,10 @@ import { createZeroTrustRule, getZeroTrustLists } from "./lib/api.js";
 import { BLOCK_BASED_ON_SNI } from "./lib/constants.js";
 import { notifyWebhook } from "./lib/helpers.js";
 
+// disable logging
+console.log = function() {}
+console.warn = function() {}
+
 const { result: lists } = await getZeroTrustLists();
 
 // Create a Wirefilter expression to match DNS queries against all the lists

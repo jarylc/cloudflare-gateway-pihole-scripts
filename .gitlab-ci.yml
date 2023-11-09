@@ -1,0 +1,29 @@
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+image: node:18-alpine
+
+stages:
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_NAME}
+  paths:
+    - blocklist.last.txt
+    - allowlist.last.txt
+
+deploy:
+  stage: deploy
+  before_script:
+    - npm ci
+    - touch allowlist.txt blocklist.txt
+  script:
+    - npx node download_lists.js
+    - test "$(sha256sum blocklist.txt)" = "$(sha256sum blocklist.last.txt)" && test "$(sha256sum allowlist.txt)" = "$(sha256sum allowlist.last.txt)" && echo "no changes, skipping run" && exit 0
+    - npx node cf_gateway_rule_delete.js
+    - npx node cf_list_delete.js
+    - npx node cf_list_create.js
+    - npx node cf_gateway_rule_create.js
+    - mv blocklist.txt blocklist.last.txt
+    - mv allowlist.txt allowlist.last.txt

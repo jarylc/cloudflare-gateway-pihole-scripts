@@ -6,6 +6,10 @@ import {
 import { FAST_MODE } from "./lib/constants.js";
 import { notifyWebhook } from "./lib/helpers.js";
 
+// disable logging
+console.log = function() {}
+console.warn = function() {}
+
 (async () => {
   const { result: lists } = await getZeroTrustLists();
 
