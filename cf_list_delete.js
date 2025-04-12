@@ -1,10 +1,8 @@
 import {
-  deleteZeroTrustListsAtOnce,
   deleteZeroTrustListsOneByOne,
   getZeroTrustLists,
 } from "./lib/api.js";
-import { FAST_MODE } from "./lib/constants.js";
-import { notifyWebhook } from "./lib/helpers.js";
+import { notifyWebhook } from "./lib/utils.js";
 
 (async () => {
   // disable logging
@@ -35,14 +33,6 @@ import { notifyWebhook } from "./lib/helpers.js";
 
   console.log(`Deleting ${cgpsLists.length} lists...`);
 
-  if (FAST_MODE) {
-    await deleteZeroTrustListsAtOnce(cgpsLists);
-    // TODO: make this less repetitive
-    await notifyWebhook(`CF List Delete script finished running (${cgpsLists.length} lists)`);
-    return;
-  }
-
   await deleteZeroTrustListsOneByOne(cgpsLists);
-
   await notifyWebhook(`CF List Delete script finished running (${cgpsLists.length} lists)`);
 })();
